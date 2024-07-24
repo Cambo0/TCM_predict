@@ -1,0 +1,1 @@
+flask flask-sqlalchemy flask-jwt-extended flask-marshmallow marshmallow-sqlalchemy scikit-learn jieba psycopg2-binary
