@@ -122,17 +122,27 @@ model = ImprovedModel()
 # Prescription Processor
 class PrescriptionProcessor:
     def __init__(self):
+        self.herb_names = None
+
+    def load_herbs(self):
         self.herb_names = set(Herb.query.with_entities(Herb.name).all())
         for herb in self.herb_names:
             jieba.add_word(herb)
 
     def process_prescription(self, text):
+        if self.herb_names is None:
+            self.load_herbs()
         text = re.sub(r'[^\w\s]', '', text)
         words = jieba.cut(text)
         herbs = [word for word in words if word in self.herb_names]
         return herbs
 
 processor = PrescriptionProcessor()
+
+def init_app(app):
+    with app.app_context():
+        global processor
+        processor = PrescriptionProcessor()
 
 # Routes
 @app.route('/register', methods=['POST'])
