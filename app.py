@@ -294,6 +294,6 @@ def is_admin():
     return current_user and current_user.is_admin
 
 if __name__ == '__main__':
-    db.create_all()
-    init_app(app)
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
